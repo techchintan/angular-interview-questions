@@ -1,6 +1,6 @@
 # Angular Interview Questions & Answers
 
-> Click :star:if you like the project and follow [@SudheerJonna](https://twitter.com/SudheerJonna) for technical updates. PDF and Epub versions are available at [actions tab](https://github.com/sudheerj/angular-interview-questions/actions).
+> Click :star:if you like the project and follow [@SudheerJonna](https://twitter.com/SudheerJonna) for technical updates. 
 
 ---
 
@@ -17,22 +17,6 @@
 </p>
 
 ---
-
-<p align="center">
-  <a href=https://bit.ly/3Fg9pgx>
-    <img src="images/collab/codestudio-logo.svg" alt="Codestudio Logo">
-  </a>
-  <p>
-    Explore the best free resource to learn Angular and kickstart your journey as an angular frontend developer <a href=https://bit.ly/3Fg9pgx target="_blank">here</a>. Earn a free certification in just 25 days.
-  </p>
-</p>
-
----
-
-## Downloading PDF/Epub formats
-
-You can download the PDF and Epub version of this repository from the latest run on the [actions tab](https://github.com/sudheerj/angular-interview-questions/actions).
-
 
 ### Table of Contents
 
@@ -316,6 +300,7 @@ You can download the PDF and Epub version of this repository from the latest run
 |276| [What is standalone component?](#what-is-standalone-component)|
 |277| [How to create a standalone component uing CLI command?](#how-to-create-a-standalone-component-uing-cli-command)
 |278| [How to create a standalone component manually?](#how-to-create-a-standalone-component-manually)
+|279| [What is hydration ?](#what-is-hydration)
 |279| [](#)
 
 1. ### What is Angular Framework?
@@ -4164,24 +4149,24 @@ You can download the PDF and Epub version of this repository from the latest run
          </label>
          ```
      Finally, the component with reactive form control appears as below,
-         ```js
-         import { Component } from '@angular/core';
-         import { FormControl } from '@angular/forms';
-
-         @Component({
-           selector: 'user-profile',
-           styleUrls: ['./user-profile.component.css']
-           template: `
-              <label>
-                User name:
-                <input type="text" [formControl]="userName">
-              </label>
-           `
-         })
-         export class UserProfileComponent {
-           userName = new FormControl('');
-         }
-         ```
+     ```js
+     import { Component } from '@angular/core';
+     import { FormControl } from '@angular/forms';
+	
+     @Component({
+       selector: 'user-profile',
+       styleUrls: ['./user-profile.component.css'],
+       template: `
+         <label>
+           User name:
+           <input type="text" [formControl]="userName">
+         </label>
+       `
+     })
+     export class UserProfileComponent {
+       userName = new FormControl('');
+     }
+     ```
 
      **[⬆ Back to Top](#table-of-contents)**
 
@@ -4216,8 +4201,8 @@ You can download the PDF and Epub version of this repository from the latest run
      2. Bind the form from template to the component using ngModel syntax
          ```html
          <input type="text" class="form-control" id="name"
-                required
-                [(ngModel)]="model.name" name="name">
+           required
+           [(ngModel)]="model.name" name="name">
          ```
      3.  Attach NgForm directive to the <form> tag in order to create FormControl instances and register them
          ```js
@@ -4241,28 +4226,26 @@ You can download the PDF and Epub version of this repository from the latest run
          // Form goes here
          <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Submit</button>
          ```
-
      Finally, the completed template-driven registration form will be appeared as follow.
-
-         ```html
-         <div class="container">
-             <h1>Registration Form</h1>
-             <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-               <div class="form-group">
-                 <label for="name">Name</label>
-                 <input type="text" class="form-control" id="name"
-                        required
-                        [(ngModel)]="model.name" name="name"
-                        #name="ngModel">
-                 <div [hidden]="name.valid || name.pristine"
-                      class="alert alert-danger">
-                   Please enter your name
-                 </div>
-               </div>
-                     <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Submit</button>
-             </form>
+     ```html
+     <div class="container">
+       <h1>Registration Form</h1>
+       <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+         <div class="form-group">
+           <label for="name">Name</label>
+             <input type="text" class="form-control" id="name"
+                    required
+                    [(ngModel)]="model.name" name="name"
+                    #name="ngModel">
+             <div [hidden]="name.valid || name.pristine"
+                  class="alert alert-danger">
+               Please enter your name
+             </div>
          </div>
-         ```
+         <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Submit</button>
+         </form>
+     </div>
+     ```
 
      **[⬆ Back to Top](#table-of-contents)**
 
@@ -4701,6 +4684,36 @@ You can download the PDF and Epub version of this repository from the latest run
         ],
         declarations: [AppComponent],
         bootstrap: [AppComponent],
+      })
+      export class AppModule {}
+      ```
+      
+      **[⬆ Back to Top](#table-of-contents)**
+278. ### What is hydration?
+      Hydration is the process that restores the server side rendered application on the client. This includes things like reusing the server rendered DOM structures, persisting the application state, transferring application data that was retrieved already by the server, and other processes.
+
+      To enable hydration, we have to enable server side rendering or Angular Universal. Once enabled, we can add the following piece of code in the root component.
+        
+      ```typescript
+      import {
+        bootstrapApplication,
+        provideClientHydration,
+      } from '@angular/platform-browser';
+
+      bootstrapApplication(RootCmp, {
+        providers: [provideClientHydration()]
+      });
+      ```
+      Alternatively we can add `providers: [provideClientHydration()]` in the App Module
+      ```typescript
+      import {provideClientHydration} from '@angular/platform-browser';
+      import {NgModule} from '@angular/core';
+      ​
+      @NgModule({
+        declarations: [RootCmp],
+        exports: [RootCmp],
+        bootstrap: [RootCmp],
+        providers: [provideClientHydration()],
       })
       export class AppModule {}
       ```
